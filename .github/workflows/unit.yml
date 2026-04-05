@@ -1,0 +1,33 @@
+name: Unit tests
+
+# Runs on every push and every pull request — unit tests are fast
+# and catch regressions immediately.
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        # 'ci' is stricter than 'install' — it uses package-lock.json exactly,
+        # never updates it, and fails if there's a mismatch
+
+      - name: Run unit tests
+        run: npm run test:unit
+        env:
+          # Unit tests don't need real credentials — they mock everything.
+          # But if your env.js requires() variables at import time,
+          # you need placeholders so it doesn't crash on startup.
+          API_BASE_URL: http://localhost
+          CLIENT_BASE_URL: http://localhost

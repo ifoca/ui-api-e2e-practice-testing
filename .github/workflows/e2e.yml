@@ -1,0 +1,43 @@
+name: E2E tests
+
+on:
+  pull_request:
+  push:
+    branches: [main] # E2E is slowest — run on main and PRs only
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+        # --with-deps installs OS-level browser dependencies.
+        # On a fresh Ubuntu runner, these are not present by default.
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        env:
+          CLIENT_BASE_URL: ${{ secrets.CLIENT_BASE_URL }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure() # only upload the report if the job failed
+        with:
+          name: playwright-report
+          path: packages/e2e/playwright-report/
+          retention-days: 7

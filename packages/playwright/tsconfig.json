@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@datafactory/*": ["library/datafactory/*"],
+      "@helpers/*": ["library/helpers/*"],
+      "@fixtures/*": ["library/fixtures/*"],
+      "@pages/*": ["library/pages/*"],
+      "@shared/*": ["../../shared/*"]
+    }
+  },
+  "include": ["tests/**/*", "fixtures/**/*", "playwright.config.ts"]
+}

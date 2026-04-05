@@ -1,0 +1,17 @@
+Structure of the project
+- has a common node modules shared for each test type sub-module
+- in the root we have the following config file:
+    - package.json - workspace config
+    - jest.config.js - shared test config for unit, integration and api tests
+    - .eslintrc.js - lint + jest rules
+    - babel.config.js - ES module transform
+    - playwright has it's own config inside the e2e package / sub-module
+
+- contains packages / sub-module for each testing type
+    - unit (jest - pure logic async utility test)
+    - integration (jest - api chains)
+    - api (supertest local - contract tests)
+    - e2e (playwright - browser journeys)
+    - shared - helpers, fixtures used by all packages
+
+

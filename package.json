@@ -1,0 +1,40 @@
+{
+  "name": "practice-testing-ui-integration-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "shared"
+  ],
+  "scripts": {
+    "test:unit": "jest --selectProjects unit",
+    "test:unit-coverage": "jest --selectProjects unit --coverage",
+    "test:unit-watch": "jest --selectProjects unit --watch",
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules jest --selectProjects integration",
+    "test:api": "jest --selectProjects api",
+    "test:e2e": "playwright test --config packages/playwright/playwright.config.ts",
+    "test:jest": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:all": "npm run test:jest && npm run test:e2e",
+    "test:database": "node packages/database/run-db-tests.js",
+    "lint": "eslint \"packages/**/src/**/*.js\" \"shared/**/*.js\""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^7.2.0",
+    "babel-jest": "^30.3.0",
+    "dotenv": "^17.4.0",
+    "eslint": "^10.0.3",
+    "eslint-plugin-jest": "^29.15.0",
+    "jest": "^30.3.0",
+    "mongodb": "^7.1.1",
+    "node-fetch": "^3.3.2",
+    "supertest": "^7.2.2"
+  },
+  "keywords": [],
+  "author": "ifoca",
+  "license": "ISC",
+  "type": "module"
+}
