@@ -12,7 +12,8 @@
       "@helpers/*": ["library/helpers/*"],
       "@fixtures/*": ["library/fixtures/*"],
       "@pages/*": ["library/pages/*"],
-      "@shared/*": ["../../shared/*"]
+      "@shared/*": ["../../shared/*"],
+      "@types/*": ["library/types/*"]
     }
   },
   "include": ["tests/**/*", "fixtures/**/*", "playwright.config.ts"]

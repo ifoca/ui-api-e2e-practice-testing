@@ -35,3 +35,7 @@ npm-debug.log*
 # Build outputs
 dist/
 build/
+
+installation-notes*
+QA_Strategy*
+scenarios*
