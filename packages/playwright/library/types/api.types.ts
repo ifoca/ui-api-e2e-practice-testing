@@ -40,7 +40,6 @@ export interface Category {
 
 export interface ProductImage {
   id: string;
-
   by_name: string;
   by_url: string;
   source_name: string;

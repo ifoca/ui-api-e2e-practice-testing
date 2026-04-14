@@ -1,24 +1,17 @@
 import { test, expect } from '@fixtures/base.fixture';
-import type { Product, ProductsResponse } from '../../../library/types/api.types';
+import type { ProductsResponse } from '../../../library/types/api.types';
 
 test.describe('Homepage validation tests based on intercepted /products API', async () => {
-  test.only('Validate product data is visible in UI from API', async ({
-    homepage,
-    page,
-    captureResponse,
-  }) => {
+  test('Validate product data is visible in UI from API', async ({ homepage, captureResponse }) => {
     const productsPromise = captureResponse<ProductsResponse>('/products**');
     await homepage.gotoHomepage();
-    const apiProducts = await productsPromise;
+    const apiProducts = (await productsPromise).data;
 
-    // ✅ TypeScript autocomplete works!
-    console.log(apiProducts.data); // ✅ Known property
+    expect(homepage.productCard).toHaveCount(apiProducts.length);
 
-    const productGrid = page.locator('.col-md-9');
-
-    for (const product of apiProducts.data) {
-      await expect(productGrid).toContainText(product.name);
-      await expect(productGrid).toContainText(product.price.toString());
+    for (const product of apiProducts) {
+      await expect(homepage.productsGrid).toContainText(product.name);
+      await expect(homepage.productsGrid).toContainText(product.price.toString());
     }
   });
 });
