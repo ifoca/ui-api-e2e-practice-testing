@@ -24,8 +24,8 @@ type InterceptFixtures = {
    * @example
    * const products = await apiInterceptor.captureResponse<Product[]>('products')
    */
-
   captureResponse: <T = unknown>(urlPattern: string) => Promise<T>;
+
   // takes a url, some data and eventually some optional extra mockOptions params for making a fake request
   /**
    * Mocks an API response with custom data

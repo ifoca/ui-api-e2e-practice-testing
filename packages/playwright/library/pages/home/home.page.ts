@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { expectNoBrokenImages } from '../../helpers/image.helper';
+import { expectNoBrokenImages } from '../../helpers/ui/image.helper';
 
 export class Homepage {
   public readonly page: Page;
@@ -13,7 +13,7 @@ export class Homepage {
     this.productsGrid = page.locator('.col-md-9');
     this.productCard = page.locator('.card');
     // gets the price within the card locator
-    this.productPrice = this.productCard.getByTestId('product-price');
+    this.productPrice = page.getByTestId('product-price');
     this.maxPriceRange = page.locator('.ngx-slider-pointer-max');
   }
 
@@ -26,20 +26,30 @@ export class Homepage {
   }
 
   async getAllCards(): Promise<Locator[]> {
-    // all() does not wait for locators, it returns the DOM directly
+    // all() does not wait for locators, it returns the current DOM directly
     return await this.productCard.all();
   }
 
-  async getProductCardsCount(): Promise<number> {
+  // performs one immediate count and does not retry if the DOM is still updating
+  async getCardsCount(): Promise<number> {
     return await this.productCard.count();
   }
 
-  async expectProductCount(number: Number) {
-    const count = await this.getProductCardsCount();
-    expect(count).toBe(number);
+  // ! if DOM is still updating, test will fail because the initial count is returned
+  // async expectProductCount(expected: number) {
+  //   const count = await this.getProductCardsCount();
+  //   expect(count).toEqual(expected);
+  // }
+
+  async expectCardsToHaveCount(expected: number) {
+    await expect(this.productCard).toHaveCount(expected);
   }
 
-  async expectNoBrokenProductImages() {
+  async expectCardsNotToHaveCount(expected: number) {
+    await expect(this.productCard).not.toHaveCount(expected);
+  }
+
+  async expectNoBrokenCardImages() {
     await expectNoBrokenImages(this.productCard);
   }
 
@@ -65,10 +75,31 @@ export class Homepage {
 
   // similar loop, but by checking the count
   async expectEveryCardToHaveName() {
-    const cardsCount = await this.getProductCardsCount();
+    const cardsCount = await this.getCardsCount();
 
     for (let i = 0; i < cardsCount; i++) {
       await expect(this.productCard.nth(i).getByTestId('product-price')).toBeVisible();
+    }
+  }
+
+  async expectCardNameToHaveText(text: string) {
+    const cards = await this.getAllCards();
+    expect(cards.length).toBeGreaterThan(0);
+
+    for (const card of cards) {
+      const name = card.getByTestId('product-name');
+      await expect(name).toContainText(text);
+    }
+  }
+
+  async expectEveryCardToHaveEcoBadge() {
+    const cards = await this.getAllCards();
+    expect(cards.length).toBeGreaterThan(0);
+
+    for (const card of cards) {
+      const ecoBadge = card.getByTestId('eco-badge');
+      await expect(ecoBadge).toBeVisible();
+      await expect(ecoBadge).toContainText('ECO');
     }
   }
 
