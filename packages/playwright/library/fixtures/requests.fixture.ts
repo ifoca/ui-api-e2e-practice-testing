@@ -44,8 +44,15 @@ export const test = base.extend<Fixtures>({
     await mkdir(AUTH_DIR, { recursive: true });
 
     // Reads from the token file and gets the access_token
-    const raw = await readFile(TOKEN_FILE, 'utf-8');
-    const { access_token } = await JSON.parse(raw);
+    let access_token: string;
+    try {
+      const raw = await readFile(TOKEN_FILE, 'utf-8');
+      ({ access_token } = await JSON.parse(raw));
+    } catch {
+      throw new Error(
+        '`token.json` file not found. Make sure auth.setup.ts has run before authenticated tests.',
+      );
+    }
 
     const context = await baseRequest.newContext({
       baseURL: process.env.API_BASE_URL,

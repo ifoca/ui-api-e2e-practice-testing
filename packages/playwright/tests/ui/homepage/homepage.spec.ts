@@ -1,7 +1,7 @@
 import { test, expect } from '@fixtures/base.fixture';
 import type { Category, ProductsResponse } from '../../../library/types/api.types';
 
-test.describe('Homepage UI tests', async () => {
+test.describe('Homepage UI tests', () => {
   test.beforeEach(async ({ homepage }) => {
     await homepage.gotoHomepage();
     await homepage.expectCardsNotToHaveCount(0);

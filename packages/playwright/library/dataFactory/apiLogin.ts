@@ -1,9 +1,6 @@
-import type { APIRequestContext } from '@playwright/test';
 import { writeFile, mkdir } from 'fs/promises';
-import { resolve } from 'path';
-
-const AUTH_DIR = resolve(__dirname, '../../.auth');
-const TOKEN_FILE = resolve(AUTH_DIR, 'token.json');
+import { AUTH_DIR, TOKEN_FILE } from 'library/config/filePaths';
+import type { APIRequestContext } from '@playwright/test';
 
 export const apiLogin = async (apiContext: APIRequestContext, email: string, password: string) => {
   // create .auth directory if it does not exist
@@ -26,6 +23,11 @@ export const apiLogin = async (apiContext: APIRequestContext, email: string, pas
   const accessToken = {
     access_token: loggedInUser.access_token,
   };
+
+  // guard in case the access_token exists but is undefined
+  if (!accessToken) {
+    throw new Error('Login succeeded but no access_token in response');
+  }
 
   await writeFile(TOKEN_FILE, JSON.stringify(accessToken, null, 2));
 

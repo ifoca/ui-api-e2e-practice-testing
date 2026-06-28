@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { resolve } from 'path';
 dotenv.config({ path: resolve(__dirname, '../../../.env') });
 
-const apiUrl = process.env.API_BASE_URL;
+const API_URL = process.env.API_BASE_URL;
 
 // define what properties the mock can take
 export type MockOptions = {
@@ -44,7 +44,7 @@ export const test = base.extend<InterceptFixtures>({
   captureResponse: async ({ page }, use) => {
     await use(async <T = unknown>(urlPattern: string): Promise<T> => {
       return new Promise((resolve, reject) => {
-        page.route(apiUrl + urlPattern, async (route: Route) => {
+        page.route(API_URL + urlPattern, async (route: Route) => {
           try {
             const response = await route.fetch();
             const data = await response.json();

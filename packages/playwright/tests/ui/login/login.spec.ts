@@ -22,7 +22,9 @@ test.describe('Login validation messages', async () => {
     await loginPage.login('fake@email.com', 'ab');
     await expect(loginPage.passwordErrorMessage).toHaveText('Password length is invalid');
   });
+});
 
+test.describe('Navigation links', () => {
   test('User is redirected to the sign up page', async ({ loginPage, page }) => {
     await loginPage.clickRegisterLink();
     await expect(page).toHaveURL('/auth/register');

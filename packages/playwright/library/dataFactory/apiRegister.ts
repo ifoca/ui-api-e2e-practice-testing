@@ -1,10 +1,7 @@
 import { writeFile, mkdir } from 'fs/promises';
-import { resolve } from 'path';
+import { AUTH_DIR, USER_FILE } from 'library/config/filePaths';
 import type { APIRequestContext } from '@playwright/test';
 import { generateRandomString } from '../helpers/utils';
-
-const AUTH_DIR = resolve(__dirname, '../../.auth');
-const USER_FILE = resolve(AUTH_DIR, 'user.json');
 
 export const registerUser = async (apiContext: APIRequestContext) => {
   // create .auth directory if it does not exist
@@ -54,5 +51,6 @@ export const registerUser = async (apiContext: APIRequestContext) => {
   return {
     status: response.status(),
     registeredUser,
+    credentials: { email, password },
   };
 };

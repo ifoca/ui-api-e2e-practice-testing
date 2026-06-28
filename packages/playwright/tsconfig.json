@@ -8,8 +8,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
+    "types": ["node"],
     "paths": {
-      "@datafactory/*": ["library/datafactory/*"],
+      "@dataFactory/*": ["library/dataFactory/*"],
       "@helpers/*": ["library/helpers/*"],
       "@fixtures/*": ["library/fixtures/*"],
       "@pages/*": ["library/pages/*"],
@@ -17,5 +18,5 @@
       "@types/*": ["library/types/*"]
     }
   },
-  "include": ["tests/**/*", "fixtures/**/*", "playwright.config.ts"]
+  "include": ["tests/**/*", "fixtures/**/*", "library/**/*", "playwright.config.ts"]
 }
