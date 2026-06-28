@@ -20,7 +20,7 @@
     "lint": "eslint \"packages/**/src/**/*.js\" \"shared/**/*.js\""
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.29.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.9.1",
